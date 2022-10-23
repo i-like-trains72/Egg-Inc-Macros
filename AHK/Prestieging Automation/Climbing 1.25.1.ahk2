@@ -1,0 +1,484 @@
+#Warn All, Off
+#SingleInstance
+
+^F1::{
+	;This is the main test function
+	main()
+}
+
+^F2::{
+	reload()
+}
+
+^F3::{	
+	getResearch(11)
+	; Send("!{a}")
+	; getMaxTrains()
+	; getMaxHenHouses()
+	; if(detector("/images/universe-egg.png")){msgbox("FOUND!")}
+	; mouseDrag(282, 792, 282, 711, 50, 150, 10)
+	; buyAHenHouse()	
+	; buyAVehicle()
+	; claimShips() ;<---- 1st CLAIM!!!
+	; getResearch()
+	; resizeWindow()
+	; safeCloseWindow()
+	; launchApp(false)
+	; msgbox(waitForTheFirstOf(["/images/purple-cta.png","/images/collect-and-refill.png"])[3])
+	; mouseDrag(286, 718, 290, 669)
+}
+
+^F4::{
+	getMouseCoords()
+}
+
+^F5::{
+	resizeWindow()
+}
+
+^F6::{
+	Loop{
+		Sleep(1)
+		Click()
+	}
+}
+
+main(){
+	prestiege()
+	Sleep(1000)
+	getChicks(300)
+	killGarbageWindows()
+	sellFarm(2)
+	Sleep(2000)
+	getChicks(300)
+	killGarbageWindows()
+	i := 1
+	Loop(8){
+		sellFarm(1)
+		Sleep(2000)
+		getChicks(300)
+		killGarbageWindows()
+		Sleep(6000)
+		buyAHenHouse(i)
+		Sleep(1000)	
+		getChicks(300)
+		Sleep(500)
+		buyAVehicle(i)
+		getChicks(300)
+		killGarbageWindows()
+		getResearch(i)
+		Sleep(2000)
+		if(detector("/images/universe-egg.png")) 
+			break
+		i++
+	}
+	safeCloseWindow()
+	Send("!{a}")
+	getMaxHenHouses()
+	getMaxTrains()
+	send("{Esc}")
+	Sleep(200)
+	send("{Esc}")
+	Sleep(200)
+	send("{Esc}")
+	launchApp()
+	killGarbageWindows()
+	getResearch(11)
+}
+
+getMaxTrains(){
+	Sleep(600)
+	Click(311, 679)
+	Sleep(600)
+	Click(426, 369)
+	Sleep(600)
+	Loop(3){
+		mouseDrag(293, 620, 301, 347, 50, 150)
+		Sleep(25)
+	}
+	Sleep(200)
+	Click(421, 623)
+	Sleep(650)
+	Click(264, 445)
+	Loop(3){
+		mouseDrag(293, 620, 301, 347, 50, 150)
+		Sleep(25)
+	}
+	Sleep(200)
+	Loop(20){
+		Click(421, 623)
+	}
+	Sleep(600)
+	safeCloseWindow()
+}
+
+getMaxHenHouses(){
+	Sleep(600)
+	Click(409, 267)
+	Sleep(600)
+	Click(409, 267)
+	Sleep(600)
+	Click(232, 524)
+	Sleep(600)
+	Loop(4){
+		mouseDrag(293, 620, 301, 347, 20, 20, 0)
+		Sleep(20)
+	}
+	Sleep(800)
+	Click(418, 660)
+	Sleep(250)
+	Click(412, 428)
+	Sleep(600)
+	Loop(4){
+		mouseDrag(293, 620, 301, 347, 20, 20, 0)
+		Sleep(20)
+	}
+	Sleep(800)
+	Click(418, 660)
+	Sleep(250)
+	Click(194, 685)
+	Sleep(600)
+	Loop(4){
+		mouseDrag(293, 620, 301, 347, 20, 20, 0)
+		Sleep(20)
+	}
+	Sleep(800)
+	Click(418, 660)
+	Sleep(250)
+	Click(424, 689)
+	Sleep(600)
+	Loop(4){
+		mouseDrag(293, 620, 301, 347, 20, 20, 0)
+		Sleep(20)
+	}
+	Sleep(800)
+	Click(418, 660)
+	safeCloseWindow()
+}
+
+getResearch(count := 1){
+	Click(45, 859)
+	Sleep(550)
+	Click(282, 792)
+	Sleep(550)
+	mouseDrag(282, 792, 282, 731, 50, 100, 10)
+	i := 0
+	Loop(7 + count){
+		Loop(80 + i * 5){
+			Sleep(5)
+			Send("!{b}")
+		}
+		Sleep(250+i*10)
+		mouseDrag(282, 792, 282, 215, 50, 200, 20)
+		i++
+	}
+	Loop(100){
+		Sleep(5)
+		Send("!{b}")
+	}
+	return
+}
+
+buyAHenHouse(count := 1){
+	if (count > 3)
+		count := 3
+	Sleep(600)
+	Click(409, 267)
+	Sleep(600)
+	Click(409, 267)
+	Sleep(600)
+	Click(232, 524)
+	Sleep(600)
+	Loop(count){
+		mouseDrag(293, 620, 301, 347, 150, 350)
+		Sleep(100)
+	}
+	Click(381, 682)
+	Sleep(50)
+	Click(426, 623)
+	Sleep(50)
+	Click(424, 531)
+	safeCloseWindow()
+}
+
+buyAVehicle(count := 1){
+	if (count > 2){
+		count := 2
+	}
+	Sleep(600)
+	Click(311, 679)
+	Sleep(600)
+	Click(426, 369)
+	Sleep(600)
+	Loop(1 + count){
+		mouseDrag(293, 620, 301, 347, 150, 350)
+		Sleep(100)
+	}
+	Loop(count){
+		Click(413, 372)
+	}
+	Sleep(600)
+	safeCloseWindow()
+}
+
+safeCloseWindow(){
+	Sleep(350)
+	Click(55, 94)
+	Sleep(1000)
+	Send("{Esc}")
+	Sleep(500)
+}
+
+sellFarm(count := 1){
+	Click(56, 87)
+	Sleep(1200)
+	MouseMove(291, 657)
+	Click()
+	Sleep(50)
+	Click()
+	Sleep(1000)
+	coords := detector("/images/yes.png")
+	if(coords){
+		Click(coords[0], coords[1])
+	}
+	killGarbageWindows()
+}
+
+doubleClaim(){
+	if(!detector("/images/purple-cta.png"))
+		msgbox("ATTENTION! MOVE THE WINDOW TO THE RIGHT!!!")
+	mouseDrag(585, 477,8, 341)
+	Sleep(500)
+	killGarbageWindows()
+	loadBackup()
+	Loop(35){
+		Click(153, 660)
+		Sleep(25)
+	}
+}
+
+claimShips(){
+	mouseDrag(585, 477,8, 341)
+	Sleep(500)
+	Loop(5){
+		Click(190, 663)
+		Sleep(300)
+	}
+}
+
+keepLocal(){
+	result := waitForTheFirstOf(["/images/backup-available.png", "/images/fancy-backup-resolve.png"])
+	if(result[3] = 1){
+		msgbox("Hey hey! we have a keep local problem here! Make a screenshot of the grey CTA!")
+		Click(coords[1],coords[2])
+	}
+	if(result[3] = 2){ ; fancy backup
+		Click(result[1],result[2]) ; click resolve
+		Sleep(300)
+		coords := waitUntil("/images/keep-local.png") ; and keep local
+		Sleep(300)
+		Click(coords[1],coords[2])
+		coords := waitUntil("/images/yes.png") ; and restore
+		Click(coords[1],coords[2])
+	}
+}
+
+loadBackup(){
+	result := waitForTheFirstOf(["/images/backup-available.png", "/images/blue-cta.png"])
+	if(result[3] = 1){
+		coords := waitUntil("/images/yes.png")
+		Click(coords[1],coords[2])
+	}
+	if(result[3] = 2){ ; fancy backup
+		Click(result[1],result[2]) ; click resolve
+		Sleep(600)
+		coords := waitUntil("/images/restore.png") ; and restore
+		Sleep(600)
+		Click(coords[1],coords[2])
+		coords := waitUntil("/images/yes.png") ; and restore
+		Click(coords[1],coords[2])
+		Sleep(4000)
+	}
+}
+
+getChicks(count := 20){
+	Loop(count){
+		Click(293, 1022)
+	}
+}
+
+prestiege(){
+	Click(56, 87)
+	coords := waitUntil("/images/prestiege-info.png")
+	Click(coords[1],coords[2])
+	coords := waitUntil("/images/p-and-collect.png")
+	Click(coords[1],coords[2])
+	coords := waitUntil("/images/yes.png")
+	Click(coords[1],coords[2])
+	Sleep(2000)
+	getChicks()
+	Send("!{a}")
+	killGarbageWindows()
+	; prestiege-info.png
+}
+
+switchWindow(number := 1){
+	screenName := number . ". pie egg 1.25.1" 
+	WinActivate(screenName)
+	WinWaitActive(screenName)
+}
+
+resizeWindow(){
+	title := WinGetTitle("A")
+	WinMove(, , 640, 1050, title)
+}
+
+launchApp(firstTime := false){
+	coords := waitUntil("/images/egg-icon-1.25.1.png")
+	Click(coords[1],coords[2])
+	Sleep(1500)
+	if(firstTime){
+		Sleep(300)
+		send("{Esc}")
+		Sleep(300)
+		send("{Esc}")
+		Sleep(300)
+		coords := waitUntil("/images/egg-icon-1.25.1.png")
+		Click(coords[1],coords[2])
+		Sleep(1500)
+	}
+	killGarbageWindows()
+	Sleep(2000)
+	killGarbageWindows()
+
+}
+
+killGarbageWindows(){
+		result := waitForTheFirstOf(["/images/purple-cta.png",
+		"/images/collect-and-refill.png"])
+	if (result[3] = 1){
+		return
+	}
+	if (result[3] = 2){
+		Send("{Esc}")
+		return
+	}
+}
+
+goToAppSettings(){
+	coords := waitUntil("/images/egg-icon-1.25.1.png")
+	MouseMove(coords[1],coords[2],2)
+	Sleep(50)
+	Click("Down")
+	Sleep(500)
+	coords := waitUntil("/images/app-info.png")
+	Click("Up")
+	Sleep(300)
+	Click(coords[1],coords[2])
+}
+
+forceStop(){
+	Loop(10){
+		Send("{Esc}")
+		Sleep(100)
+	}
+	goToAppSettings()
+	coords := waitUntil("/images/force-stop.png")
+	Click(coords[1],coords[2])
+	coords := waitUntil("/images/fstop-ok.png")
+	Click(coords[1],coords[2])
+	Send("{Esc}")
+	Send("{Esc}")
+}
+
+deleteAppData(){
+	goToAppSettings()
+ 	coords := waitUntil("/images/storage.png")
+	Click(coords[1],coords[2])
+	coords := waitUntil("/images/clear-storage.png")
+	Click(coords[1],coords[2])
+	coords := waitUntil("/images/ok.png")
+	Click(coords[1],coords[2])
+	Sleep(300)
+	send("{Esc}")
+	Sleep(300)
+	send("{Esc}")
+	Sleep(300)
+}
+
+mouseDrag(x1,y1,x2,y2,clickDelay1 := 25, clickDelay2 := 25, speed := 5){
+	MouseMove(x1, y1, 50)
+	SendMode "Event"
+	SetDefaultMouseSpeed speed
+	Click("Down")
+	Sleep(clickDelay1)
+	SendEvent("{Click " . x2 . " " . y2 . " 0}")
+	; MouseMove(x2, y2, 0)
+	Sleep(clickDelay2)
+	Click("Up")
+	SendMode "Input"
+}
+
+getMouseCoords(){
+	; This is for mouse position tracking
+	OutputVarX := 0
+	OutputVarY := 0
+	MouseGetPos(&OutputVarX, &OutputVarY)
+	ColorVar := 0
+	OutputVarX := OutputVarX ;- 10
+	OutputVarY := OutputVarY ;- 10
+	PixelGetColor ColorVar, OutputVarX, OutputVarY
+	A_Clipboard := Format("{1}, {2}", OutputVarX, OutputVarY)
+	msgbox(Format("This is coords: {1}, {2}, The color is {3}",OutputVarX, OutputVarY,ColorVar))
+	return
+}
+
+waitForTheFirstOf(paths, delay := 500){
+	Loop{
+		for(k, v in paths){
+			coords := detector(v)
+			if(coords){
+				coords.InsertAt(3,k)
+				return coords
+			}
+			Sleep(Ceil(delay/10))
+		}
+		Sleep(delay)
+	}
+}
+
+waitUntil(path, delay := 500){
+	Loop{
+		coords := detector(path)
+		if(coords)
+			return coords
+		Sleep(delay)
+	}
+}
+
+detector(path){
+	; This function detects images on screen.
+	FoundX := 0
+	FoundY := 0
+	width := 0
+	height := 0
+	WinGetPos(,, &width, &height, "A")
+	; msgbox(A_ScriptDir . "" . path)
+	ErrorLvl := ImageSearch(&FoundX, &FoundY, 0, 0, width, height, A_ScriptDir . "" . path)
+	if(ErrorLvl = 1) {
+		;MsgBox path." was found at " . FoundX . "x" . FoundY
+		return [FoundX, FoundY]
+	}
+	else{
+		;MsgBox(A_ScriptDir . "/images/test.png" . path . " was NOT found.")
+		return false
+	}
+}
+
+issueAlarm(delay := 5, step := 100, stepDuration := 100, beeps := 8, i:=0){
+	Loop(beeps){
+		SoundBeep(step + i * step, stepDuration)
+		Sleep(stepDuration + delay)
+		i++
+	}
+}

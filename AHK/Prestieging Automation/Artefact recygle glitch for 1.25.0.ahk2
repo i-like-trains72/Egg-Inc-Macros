@@ -1,0 +1,241 @@
+#Warn All, Off
+#SingleInstance
+
+^F1::{
+	;This is the main test function
+	main()
+}
+
+^F2::{
+	reload()
+}
+
+^F3::{
+	recycle()
+	;waitUntil("/images/test.png")
+	;recycle()
+	;Send("{Esc}")
+	
+}
+
+^F4::{
+	getMouseCoords()
+}
+
+^F5::{
+	resizeWindow()
+}
+
+main(){
+	Loop{
+		coords := waitUntil("/images/egg-icon.png")
+		Click(coords[1],coords[2])
+		Sleep(1500)
+		killGarbageWindows()
+		waitUntil("/images/purple-cta.png")
+		Sleep(1500)
+		goToArts()
+		waitUntil("/images/hall-of-arts.png")
+		recycle()
+	}
+}
+
+recycle(){
+	;mouseDrag(517, 621, 2, 621, 200) ; go one screen to the right.
+	;Sleep(550)
+	;mouseDrag(517, 621, 2, 621, 200)
+	;Sleep(250)
+	;mouseDrag(560, 600,61, 576, 100, 50)
+	;Sleep(550)
+	;Loop(10){
+	;	Send("{Left}")
+	;	Sleep(100)
+	;}
+	;Loop{
+	;	Send("{Right}")
+	;	Sleep(2150)
+	;	if(detector("/images/shiny-stone.png"))
+	;	{
+	;		break
+	;	}
+	;}
+	;mouseDrag(519, 556, 94, 556, 150, 350)
+	;Sleep(550)
+	mouseDrag(519, 556, 94, 556, 150, 350)
+	Loop{
+		Sleep(500)
+		MouseMove(207, 580) ; This is where the artefact is located in the grid.
+		realClick(100)
+		i := 0
+		Loop{
+			coords := detector("/images/recycle.png")
+			if(coords)
+				break
+			else{
+				Sleep(250)
+				i++
+				if (i>15){
+					realClick()
+					i := 0
+				}
+			}
+		}
+		
+		Click(coords[1],coords[2])
+		Sleep(800)
+		Click("Down")
+		Sleep(1060)
+		Send("{Esc}")
+		Sleep(375)
+		Click("Up")
+		Loop(20){
+			if(detector("/images/multi-success.png")){
+				Sleep(120)
+				Click(390, 459)
+				Loop(10){
+					Sleep(200)
+					if(detector("/images/hall-of-arts.png")){
+						Send("{Esc}")
+						Sleep(125)
+						Send("{Esc}")
+						Sleep(125)
+						Send("{Esc}")
+						Sleep(125)
+						Send("{Esc}")
+						Sleep(125)
+					}
+				}
+				return
+			}else if(detector("/images/consume-fail.png")){
+						Sleep(225)
+						Send("{Esc}")
+						Sleep(325)
+						Send("{Esc}")
+			}
+		}
+		if(detector("/images/grey-cross.png"))
+			Send("{Esc}")
+		Sleep(500)
+	}
+}
+
+goToArts(){
+	mouseDrag(585, 477,8, 341)
+	Sleep(1200)
+	Click(562, 574) ; Open Arts
+}
+
+killGarbageWindows(){
+		result := waitForTheFirstOf(["/images/purple-cta.png",
+		"/images/collect-and-refill.png"])
+	if (result[3] = 1){
+		return
+	}
+	if (result[3] = 2){
+		Send("{Esc}")
+		return
+	}
+}
+waitForTheFirstOf(paths, delay := 500){
+	Loop{
+		for(k, v in paths){
+			coords := detector(v)
+			if(coords){
+				coords.InsertAt(3,k)
+				return coords
+			}
+			Sleep(Ceil(delay/10))
+		}
+		Sleep(delay)
+	}
+}
+mouseDrag(x1,y1,x2,y2,clickDelay1 := 25, clickDelay2 := 75, speed := 5){
+	MouseMove(x1, y1, 50)
+	;SendMode "Event"
+	;SetDefaultMouseSpeed(5)
+	Click("Down")
+	Sleep(clickDelay1)
+	SendEvent("{Click " . x2 . " " . y2 . " 0}")
+	; MouseMove(x2, y2, 0)
+	Sleep(clickDelay2)
+	Click("Up")
+	;SendMode "Input"
+}
+
+realClick(delay := 30){
+	MouseClick("Left",,,1,20,"Down")
+	Sleep(delay)
+	MouseClick("Left",,,1,20,"Up")
+}
+
+getMouseCoords(){
+	; This is for mouse position tracking
+	OutputVarX := 0
+	OutputVarY := 0
+	MouseGetPos(&OutputVarX, &OutputVarY)
+	ColorVar := 0
+	OutputVarX := OutputVarX ;- 10
+	OutputVarY := OutputVarY ;- 10
+	PixelGetColor ColorVar, OutputVarX, OutputVarY
+	A_Clipboard := Format("{1}, {2}", OutputVarX, OutputVarY)
+	msgbox(Format("This is coords: {1}, {2}, The color is {3}",OutputVarX, OutputVarY,ColorVar))
+	return
+}
+
+waitUntil(path, delay := 300){
+	Loop{
+		if(detector(path))
+			return detector(path)
+		Sleep(delay)
+	}
+	
+}
+
+detector(path){
+	; This function detects images on screen.
+	FoundX := 0
+	FoundY := 0
+	ErrorLvl := ImageSearch(&FoundX, &FoundY, 0, 0, 1920, 1080, A_ScriptDir . "" . path)
+	if(ErrorLvl = 1) {
+		;MsgBox path." was found at " . FoundX . "x" . FoundY
+		return [FoundX, FoundY]
+	}
+	else{
+		;MsgBox(A_ScriptDir . "/images/test.png" . path . " was NOT found.")
+		return false
+	}
+}
+
+chat(text, delay){
+	Send("{Enter}")
+	Sleep(delay)
+	SetKeyDelay(2,1)
+	SendEvent(text)
+	Sleep(delay)
+	Send("{Enter}")
+}
+
+pressKey(charkey, count := 1, ms := 30){
+    Loop count
+    {
+        Send("{" . charkey . " down}")
+        Sleep(ms)
+        Send("{" . charkey . " up}")
+        Sleep(ms)
+    }
+}
+
+resizeWindow(){
+	title := WinGetTitle("A")
+	WinMove(, , 640, 1050, title)
+	msgbox("Moved window " . title)
+}
+
+
+issueAlarm(delay := 5, step := 100, stepDuration := 100, beeps := 8, i:=0){
+	Loop(beeps){
+		SoundBeep(step + i * step, stepDuration)
+		Sleep(stepDuration + delay)
+		i++
+	}
+}
